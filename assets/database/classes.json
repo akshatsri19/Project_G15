@@ -1,0 +1,20 @@
+[
+    {
+        "classType":"SPIN",
+        "classLevel":"BEGINNER",
+        "classInstructor":"RILEY",
+        "classDuration":"30 MIN"
+    },
+    {
+        "classType":"ASTHANGA YOGA",
+        "classLevel":"",
+        "classInstructor":"PETER",
+        "classDuration":"60 MIN"
+    },
+    {
+        "classType":"HITT",
+        "classLevel":"INTERMEDIATE",
+        "classInstructor":"MICHELLE",
+        "classDuration":"45 MIN"
+    }
+]

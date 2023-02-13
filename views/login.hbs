@@ -1,18 +1,45 @@
+{{#if createAcc}}   
+{{#if createDisplay}}
+<form action="/createAccount" method="post">
+    <label for="firstName">Firstname</label>
+    <input type="text" name="firstName" placeholder="Enter your firstname">
+    <label for="lastName">Lastname</label>
+    <input type="text" name="lastName" placeholder="Enter your lastName">
+    <label for="userName">Username</label>
+    <input type="text" name="email" placeholder="Enter your email id">
+    <label for="password">Password</label>
+    <input type="text" name="password" placeholder="Enter your password">
+    <input type="radio" name="userType" value="normal">
+    <label for="userType">Normal User</label>
+    <input type="radio" name="userType" value="admin">
+    <label for="userType">Admin User</label>
+    <button>Submit</button>
+</form>
+{{else}}
+<form action="/create" method="post">
+    <h2>CREATE AN ACCOUNT</h2>
+    <input type="checkbox" name="member">
+    <label >Signup to be a member($75 per mth)</label>
+    <button name="onClick" value="yes">YES</button>
+    <button name="onClick" value="no">NO</button>
+</form>
+{{/if}}
+{{else}}
 <form action="/login" method="post">
     <label for="">LOGIN OR SIGNUP</label>
-    <input type="email" name="" id="">
-    <input type="text" name="" id="">
+    <input type="email" name="emailId" id="">
+    <input type="text" name="password" id="">
+    <input type="radio" name="userType" value="normal">
+    <label for="userType">Normal User</label>
+    <input type="radio" name="userType" value="admin">
+    <label for="userType">Admin User</label>
     <button>LOGIN</button>
-    <button id="createAcc">CREATE ACCOUNT</button>
-    {{!-- {{#if createAcc}} --}}
-    <form action="/create" method="get">
-    <label for="">CREATE AN ACCOUNT</label>
-    <input type="checkbox">
-    <label for="">Signup to be a member($75 per mth)</label>
-    <button>YES</button>
-    <button>NO</button>
-    </form>
-    {{!-- {{/if}} --}}
 </form>
 
+<form action="/createAccount" method="get">
+    <button>CREATE ACCOUNT</button>
+</form>
+{{/if}}
 
+
+ 

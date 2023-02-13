@@ -5,16 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="/home">Home</a></li>
-                <li><a href="/class">Class</a></li>
-                <li><a href="/cart">Cart</a></li>
-                <li><a href="">Admin</a></li>
-                <li><a href="/login">login/Logout</a></li>
+                <li><a href="/">HOME</a></li>
+                <li><a href="/class">CLASS</a></li>
+                <li><a href="/cart">CART</a></li>
+                <li><a href="/admin">ADMIN</a></li>
+                {{#if authCheck}}
+                <li><a href="/bye">LOGOUT</a></li>
+                {{else}}
+                <li><a href="/login">LOGIN</a></li>
+                {{/if}}
             </ul>
         </nav>
     </header>
