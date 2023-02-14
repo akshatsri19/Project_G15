@@ -35,26 +35,37 @@ const classSchema = new mongoose.Schema({
     classType: String,
     classLevel: String,
     classInstructor: String,
-    classDuration:String
+    classDuration:Number
 });
 
 const userSchema = new mongoose.Schema({
     firstName: String,
     lastname: String,
     userName: String,
-    password: String
+    password: String,
+    member:Boolean
 });
 
 const cartSchema = new mongoose.Schema({
+    userName:String,
     classType: String,
     classLevel: String,
     classInstructor: String,
-    classDuration:String
+    classDuration:Number,
 });
+
+const paymentSchema = new mongoose.Schema({
+    userName:String,
+    subTotal:Number,
+    tax:Number,
+    total:Number,
+    date:Date
+})
 
 const Class = mongoose.model('Class', classSchema);
 const Users = mongoose.model('Users', userSchema);
-const Cart = mongoose.model('Cart', cartSchema)
+const Cart = mongoose.model('Cart', cartSchema);
+const Payments = mongoose.model('Payments', paymentSchema);
 
 //--------------------------------------------------- GLOBAL VARIABLES ---------------------------------------------------------------
 
@@ -63,6 +74,13 @@ let cartEmail = ""
 let createAccFlag = false
 let createDisplayFlag = false
 let userTypeUi = "admin"
+let paymentsObj = {
+    subTotal:0,
+    tax:0,
+    total:0
+}
+let verifiedMember = false
+var date = new Date().getDate();
 
 //--------------------------------------------------------- CONTROLLERS ----------------------------------------------------------------
 
@@ -127,6 +145,7 @@ app.post("/create", async (req,res) => {
     const memberUi = req.body.member
     if(onClickUi==="yes" && memberUi === "on")
     {
+        verifiedMember = true
         createDisplayFlag = true
         res.render("login", {layout:"skeleton", createDisplay: createDisplayFlag , createAcc: createAccFlag})
     }
@@ -151,7 +170,8 @@ app.post("/createAccount",async (req,res) => {
             firstName:firstNameUi,
             lastname:lastNameUi,
             userName:userNameUi,
-            password:passwordUi
+            password:passwordUi,
+            member:verifiedMember
         })
         await addUser.save();
         validCred = true;
@@ -175,7 +195,7 @@ app.post("/createAccount",async (req,res) => {
     }
 })
 
-//------------------------------------------------------- CLASSES TO BE DISPLAYED-------------------------------------------------
+//------------------------------------------------------- CLASSES TO BE DISPLAYED AND ADDED-------------------------------------------------
 
 app.get("/class", async(req,res) => {
     try {
@@ -185,24 +205,19 @@ app.get("/class", async(req,res) => {
     catch (error) {
         console.error(error);
     }
-    
 })
 
-//-------------------------------------------------------- CART ITEMS ----------------------------------------------------------------
-
-app.get("/cart", (req,res) => {
-    res.render("cart", {layout:"skeleton", authCheck:validCred})
-})
-
-app.post("/cart", async (req,res)=>{
+app.post("/class",async(req,res)=>{
     const classTypeToAddUi = req.body.classTypeToAdd
     const classLevelToAddUi = req.body.classLevelToAdd
     const classInstructorToAddUi = req.body.classInstructorToAdd
     const classDurationToAddUi = req.body.classDurationToAdd
     try{
         if(validCred === true){
+            const classOffered = await Class.find({}).lean();
             const users = await Users.findOne({userName:cartEmail}).lean()
             const itemsToAdd = new Cart({
+                userName:cartEmail,
                 classType:classTypeToAddUi,
                 classLevel:classLevelToAddUi,
                 classInstructor:classInstructorToAddUi,
@@ -210,32 +225,93 @@ app.post("/cart", async (req,res)=>{
             })
             await itemsToAdd.save()
             const cart = await Cart.find({}).lean()
-            res.render("cart", {layout:"skeleton", authCheck:validCred, cartEmailToDisplay: users.userName, cart:cart })
+            if(users.member === true){
+                paymentsObj.tax = 0.13 * 75
+                paymentsObj.total = paymentsObj.tax + 75
+            }
+            else{
+                for(let cartValue of cart){
+                    paymentsObj.subTotal += cartValue.classDuration * 0.75;
+                }
+                paymentsObj.tax = paymentsObj.subTotal * 0.13;
+                paymentsObj.total = paymentsObj.subTotal + paymentsObj.tax
+            }
+            res.render("class", {layout:"skeleton", classes:classOffered, authCheck:validCred})
         }
         else{
             res.send("ERROR: You need to login to book a class")
         }
     }
-    catch (error) 
-    {
+    catch (error) {
         console.error(error);
     }   
 })
+//-------------------------------------------------------- CART ITEMS ----------------------------------------------------------------
 
-app.post("/pay", async(req,res) => {
-    const idToRemove = req.body.removeCart
+app.get("/cart",async (req,res) => {
+    try {
+        const cart = await Cart.find({}).lean()
+        const users = await Users.findOne({userName:cartEmail}).lean()
+        res.render("cart", {layout:"skeleton", authCheck:validCred, user:users,cart:cart, payments:paymentsObj})
+    }
+    catch (error) {
+        console.error(error);
+    }
+})
+
+
+app.post("/pay", async(req,res) => {    
+    const buttonFuncUi = req.body.buttonFunc
     try {
         const users = await Users.findOne({userName:cartEmail}).lean()
-        await Cart.findOne({_id:idToRemove}).lean().remove();
-        const cart = await Cart.find({}).lean();
-        console.log(cart)
-        if(cart.length === 0)
-        res.render("cart", {layout:"skeleton", cart:cart, cartEmailToDisplay: users.userName , authCheck:validCred, error:"There are no items in your cart"})
-        else
-        res.render("cart", {layout:"skeleton", cart:cart, cartEmailToDisplay: users.userName , authCheck:validCred , error: ""})
+        if(validCred === false)
+            res.send("ERROR: Login in for booking a class")  
+        else{
+            if(buttonFuncUi==="proceed"){
+                const payments = new Payments({
+                    userName:cartEmail,
+                    subTotal:paymentsObj.subTotal,
+                    tax:paymentsObj.tax,
+                    total:paymentsObj.total,
+                    date:date
+                })
+                await payments.save()
+                const cart = await Cart.find({}).lean();
+                if(cart.length===0){
+                    res.send("ERROR: Please add items in cart to procees")
+                }
+                res.render("success",{layout:"skeleton" ,authCheck:validCred})
+                paymentsObj.subTotal = 0
+                paymentsObj.tax = 0
+                paymentsObj.total = 0 
+                await Cart.find({}).lean().remove()
+            }
+            else{
+                await Cart.findOne({_id:buttonFuncUi}).lean().remove();
+                const cart = await Cart.find({}).lean();
+                if(cart.length === 0){
+                    paymentsObj.tax = 0
+                    paymentsObj.total = 0
+                    res.render("cart", {layout:"skeleton", cart:cart, user: users , authCheck:validCred, error:"There are no items in your cart"})
+                }
+                else{
+                    if(users.member === true){
+                        paymentsObj.tax = 0.13 * 75
+                        paymentsObj.total = paymentsObj.tax + 75
+                    }
+                    else{
+                        for(let cartValue of cart){
+                            paymentsObj.subTotal -= cartValue.classDuration * 0.75;
+                        }
+                        paymentsObj.tax = paymentsObj.subTotal * 0.13;
+                        paymentsObj.total = paymentsObj.subTotal + paymentsObj.tax
+                    }
+                    res.render("cart", {layout:"skeleton", cart:cart, user: users , authCheck:validCred , error: "", payments:paymentsObj})
+                }
+            }
+        }
     } 
-    catch (error) 
-    {
+    catch (error) {
         console.error(error);
     }
 })
@@ -246,7 +322,7 @@ app.get("/admin",(req,res) => {
     if(validCred === true && userTypeUi === "admin")
     res.render("admin",{layout:"skeleton", authCheck:validCred})
     else
-    res.send("ERROR: Only admin user id allowed to view this page")
+    res.send("ERROR: Only admin user is allowed to view this page")
 })
 
 // ------------------------------------------------------------------------------------------------------------------------------------

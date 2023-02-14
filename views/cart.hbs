@@ -1,18 +1,21 @@
 <form action="/pay" method="post">
 <label for="">Customer Details</label>
 <input type="text" placeholder="Enter your name here"> 
-<input type="email" value="{{cartEmailToDisplay}}">
+<input type="email" value="{{user.userName}}" placeholder="Enter you email here">
+{{#if user.member}}
+<p>&bigstar;Verified Member</p>
+{{/if}}
 <p>Your Classes</p>
 {{#each cart}}
 <div>
 <p>{{classType}} - {{classLevel}} with {{classInstructor}}</p>
-<p>{{classDuration}}</p>
-<button name="removeCart" value="{{_id}}">Remove</button>
+<p>{{classDuration}} MIN</p>
+<button name="buttonFunc" value="{{_id}}">Remove</button>
 </div>
 {{/each}}
 <p>{{error}}</p>
-<p>Subtotal</p>
-<p>Tax</p>
-<p>total</p>
-<button>Pay</button>
+<p>Subtotal: {{payments.subTotal}}</p>
+<p>Tax: {{payments.tax}}</p>
+<p>Total: {{payments.total}}</p>
+<button name="buttonFunc" value="proceed">Pay</button>
 </form>
