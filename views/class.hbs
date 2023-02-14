@@ -1,16 +1,5 @@
 <h1>Our Classes</h1>
 <p>Let us find you a class that meets your fitness goal</p>
 {{#each classes}}
-<article>
-    <img src="" alt="">
-    <p>{{classType}} - {{classLevel}} with {{classInstructor}}</p>
-    <p>{{classDuration}}</p>
-    <form action="/cart" method="post">
-    <input type="hidden" name="classTypeToAdd" value="{{classType}}">
-    <input type="hidden" name="classLevelToAdd" value="{{classLevel}}">
-    <input type="hidden" name="classInstructorToAdd" value="{{classInstructor}}">
-    <input type="hidden" name="classDurationToAdd" value="{{classDuration}}">
-    <button>Book Now</button>
-    </form>
-</article>
+{{>classItem}}
 {{/each}}       

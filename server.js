@@ -246,7 +246,7 @@ app.get("/admin",(req,res) => {
     if(validCred === true && userTypeUi === "admin")
     res.render("admin",{layout:"skeleton", authCheck:validCred})
     else
-    res.send("ERRRO: Only admin user id allowed to view this page")
+    res.send("ERROR: Only admin user id allowed to view this page")
 })
 
 // ------------------------------------------------------------------------------------------------------------------------------------
