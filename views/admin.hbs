@@ -1,7 +1,25 @@
 <table>
-    {{!-- purhase made bu website customer --}}
+<tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Subtotal</th>
+    <th>Tax</th>
+    <th>Total</th>
+    <th>Date</th>
+</tr>
+{{#each payments}}
+<tr>
+    <td>{{firstName}}</td>
+    <td>{{userName}}</td>
+    <td>{{subTotal}}</td>
+    <td>{{tax}}</td>
+    <td>{{total}}</td>
+    <td>{{date}}</td>
+</tr>
+{{/each}}
 </table>
-
-<p>Total amount earned</p>
+{{#each avg}}
+<p>Total amount earned: {{average_total}}</p>
+{{/each}}
 
 <P>Sorting</P>

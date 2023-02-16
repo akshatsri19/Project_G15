@@ -6,6 +6,8 @@ const HTTP_PORT = process.env.HTTP_PORT || 8080
 
 app.use(express.urlencoded({ extended: true }))
 
+app.use(express.static("assets"));
+
 const exphbs = require("express-handlebars");
 app.engine(".hbs", exphbs.engine({
  extname: ".hbs",
@@ -55,6 +57,7 @@ const cartSchema = new mongoose.Schema({
 });
 
 const paymentSchema = new mongoose.Schema({
+    firstName:String,
     userName:String,
     subTotal:Number,
     tax:Number,
@@ -80,7 +83,7 @@ let paymentsObj = {
     total:0
 }
 let verifiedMember = false
-var date = new Date().getDate();
+var date = new Date();
 
 //--------------------------------------------------------- CONTROLLERS ----------------------------------------------------------------
 
@@ -115,9 +118,13 @@ app.post("/login",async(req,res) => {
             }
             else if(userTypeUi === "admin")
             {
+                const payments = await Payments.find({}).lean()
                 req.session.currentUser = "admin"
                 if(req.session.currentUser === "admin"){
-                res.render("admin",{layout:"skeleton", authCheck:validCred})
+                    const average = await Payments.aggregate([
+                        { $group: { _id: null, average_total: { $avg: "$total" } } }
+                    ]);
+                res.render("admin",{layout:"skeleton", authCheck:validCred , payments:payments, avg:average})
                 }
             }
         }    
@@ -183,9 +190,13 @@ app.post("/createAccount",async (req,res) => {
             }
             else if(userTypeUi === "admin")
             {
+                const payments = await Payments.find({}).lean()
                 req.session.currentUser = "admin"
                 if(req.session.currentUser === "admin"){
-                res.render("admin",{layout:"skeleton", authCheck:validCred})
+                    const average = await Payments.aggregate([
+                        { $group: { _id: null, average_total: { $avg: "$total" } } }
+                    ]);
+                res.render("admin",{layout:"skeleton", authCheck:validCred , payments:payments, avg:average})
                 }
             }
     } 
@@ -269,6 +280,7 @@ app.post("/pay", async(req,res) => {
         else{
             if(buttonFuncUi==="proceed"){
                 const payments = new Payments({
+                    firstName:users.firstName,
                     userName:cartEmail,
                     subTotal:paymentsObj.subTotal,
                     tax:paymentsObj.tax,
@@ -280,7 +292,8 @@ app.post("/pay", async(req,res) => {
                 if(cart.length===0){
                     res.send("ERROR: Please add items in cart to procees")
                 }
-                res.render("success",{layout:"skeleton" ,authCheck:validCred})
+                var randomNumber = Math.floor(Math.random() * (100000 - 99999 + 1)) + 99999;
+                res.render("success",{layout:"skeleton" ,authCheck:validCred, orderNumber:randomNumber})
                 paymentsObj.subTotal = 0
                 paymentsObj.tax = 0
                 paymentsObj.total = 0 
@@ -318,9 +331,17 @@ app.post("/pay", async(req,res) => {
 
 //----------------------------------------------------------- ADMIN --------------------------------------------------------------------
 
-app.get("/admin",(req,res) => {
-    if(validCred === true && userTypeUi === "admin")
-    res.render("admin",{layout:"skeleton", authCheck:validCred})
+app.get("/admin",async(req,res) => {
+    if(validCred === true && userTypeUi === "admin"){
+        const payments = await Payments.find({}).lean()
+        req.session.currentUser = "admin"
+        if(req.session.currentUser === "admin"){
+            const average = await Payments.aggregate([
+                { $group: { _id: null, average_total: { $avg: "$total" } } }
+            ]);
+        res.render("admin",{layout:"skeleton", authCheck:validCred , payments:payments, avg:average})
+        }
+    }
     else
     res.send("ERROR: Only admin user is allowed to view this page")
 })
