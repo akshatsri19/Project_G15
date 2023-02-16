@@ -1,5 +1,6 @@
 <article>
-    <img src="" alt="">
+    <img src="{{image}}">
+    <div id="post">
     <p>{{classType}} - {{classLevel}} with {{classInstructor}}</p>
     <p>{{classDuration}} MIN</p>
     <form action="/class" method="post">
@@ -8,5 +9,6 @@
     <input type="hidden" name="classInstructorToAdd" value="{{classInstructor}}">
     <input type="hidden" name="classDurationToAdd" value="{{classDuration}}">
     <button>Book Now</button>
+    </div>
     </form>
 </article>

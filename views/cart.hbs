@@ -1,21 +1,21 @@
-<form action="/pay" method="post">
-<label for="">Customer Details</label>
-<input type="text" placeholder="Enter your name here"> 
-<input type="email" value="{{user.userName}}" placeholder="Enter you email here">
+<form id="cart" action="/pay" method="post">
+<label for="">Customer Details</label><br></br>
+<input type="text" placeholder="Enter your name here"> <br></br>
+<input type="email" value="{{user.userName}}" placeholder="Enter you email here"><br></br>
 {{#if user.member}}
 <p>&bigstar;Verified Member</p>
 {{/if}}
-<p>Your Classes</p>
+<p>Your Classes</p><br>
 {{#each cart}}
-<div>
-<p>{{classType}} - {{classLevel}} with {{classInstructor}}</p>
-<p>{{classDuration}} MIN</p>
-<button name="buttonFunc" value="{{_id}}">Remove</button>
+<div class="select">
+<p>{{classType}} - {{classLevel}} with {{classInstructor}}</p><br>
+<p>{{classDuration}} MIN</p><br>
+<button name="buttonFunc" value="{{_id}}">Remove</button><br>
 </div>
 {{/each}}
 <p>{{error}}</p>
-<p>Subtotal: {{payments.subTotal}}</p>
-<p>Tax: {{payments.tax}}</p>
-<p>Total: {{payments.total}}</p>
-<button name="buttonFunc" value="proceed">Pay</button>
+<p>Subtotal: {{payments.subTotal}}</p><br>
+<p>Tax: {{payments.tax}}</p><br>
+<p>Total: {{payments.total}}</p><br></br>
+<button class="pay" name="buttonFunc" value="proceed">Pay</button>
 </form>

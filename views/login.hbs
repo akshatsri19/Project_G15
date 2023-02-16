@@ -1,45 +1,46 @@
 {{#if createAcc}}   
 {{#if createDisplay}}
-<form action="/createAccount" method="post">
-    <label for="firstName">Firstname</label>
-    <input type="text" name="firstName" placeholder="Enter your firstname">
-    <label for="lastName">Lastname</label>
-    <input type="text" name="lastName" placeholder="Enter your lastName">
-    <label for="userName">Username</label>
-    <input type="text" name="email" placeholder="Enter your email id">
-    <label for="password">Password</label>
-    <input type="text" name="password" placeholder="Enter your password">
+<form class="newAccount" action="/createAccount" method="post">
+    <label for="firstName">Firstname:</label>
+    <input type="text" name="firstName" placeholder="Enter your firstname"><br></br>
+    <label for="lastName">Lastname:</label>
+    <input type="text" name="lastName" placeholder="Enter your lastName"><br></br>
+    <label for="userName">Username:</label>
+    <input type="text" name="email" placeholder="Enter your email id"><br></br>
+    <label for="password">Password:</label>
+    <input type="text" name="password" placeholder="Enter your password"><br></br>
+    <div>
     <input type="radio" name="userType" value="normal">
     <label for="userType">Normal User</label>
     <input type="radio" name="userType" value="admin">
-    <label for="userType">Admin User</label>
+    <label for="userType">Admin User</label><br></br>
+    </div>
     <button>Submit</button>
 </form>
 {{else}}
-<form action="/create" method="post">
-    <h2>CREATE AN ACCOUNT</h2>
+<form class="create" action="/create" method="post">
+    <h2>CREATE AN ACCOUNT</h2><br>
     <input type="checkbox" name="member">
-    <label >Signup to be a member($75 per mth)</label>
+    <label >Signup to be a member($75/mo)</label><br></br>
     <button name="onClick" value="yes">YES</button>
     <button name="onClick" value="no">NO</button>
 </form>
 {{/if}}
 {{else}}
-<form action="/login" method="post">
-    <label for="">LOGIN OR SIGNUP</label>
-    <input type="email" name="emailId" id="">
-    <input type="text" name="password" id="">
+<div id="signup">
+    <form class="login" action="/login" method="post">
+    <label for=""><b>LOGIN OR SIGNUP</b></label><br></br>
+    <input type="email" placeholder="Enter email address" name="emailId" id=""/><br></br>
+    <input type="text" placeholder="Enter password" name="password" id=""/><br></br>
     <input type="radio" name="userType" value="normal">
     <label for="userType">Normal User</label>
     <input type="radio" name="userType" value="admin">
-    <label for="userType">Admin User</label>
+    <label for="userType">Admin User</label><br></br>
     <button>LOGIN</button>
 </form>
 
 <form action="/createAccount" method="get">
-    <button>CREATE ACCOUNT</button>
+    <button id="new">CREATE ACCOUNT</button>
 </form>
+</div>
 {{/if}}
-
-
- 

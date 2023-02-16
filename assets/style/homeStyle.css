@@ -1,0 +1,258 @@
+/* Home page */
+#home {
+    margin:0px;
+    /* border:solid 5px yellow; */
+    text-align: center;
+    padding:140px;
+    color:white;
+}
+
+#home a{
+    /* border:solid 1px red; */
+    border-radius: 100px;
+    color:white;
+    background-color:rgb(231, 100, 39);
+    text-transform:uppercase;
+    text-decoration: none;
+    padding: 12px;
+}
+#home a:hover{
+    color:gray;
+    background-color:white;
+}
+
+
+/* Classes page */
+#classListing {
+    color:white;
+    text-align: center;
+    padding: 10px;
+    margin: 80px 300px;
+}
+#classListing button{
+    border-radius: 120px;
+    border:solid 1px gray;
+    width:120px;
+    height:30px;
+    color:white;
+    background-color:rgb(231, 100, 39);
+}
+#classListing button:hover{
+    color:gray;
+    background-color: white;
+}
+#classListing article {
+    border-radius: 20px;
+    background-color:white;
+    color:black;
+    margin:30px 30px;
+    padding:20px;
+    display:flex;
+}
+#classListing article img{
+    height:150px;
+    width:250px;
+    padding:20px;
+}
+#post{
+    padding: 50px 100px;
+}
+
+
+
+/* cart */
+#cart{
+    /* border:solid 1px yellow; */
+    border-radius:20px;
+    background-color:white;
+    margin: 20px 520px;
+    padding:100px;
+    overflow:hidden;
+}
+#cart h1{
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration-line: underline;
+}
+#cart input{
+    border:solid 2px gray;
+    border-radius: 20px;
+    width:300px;
+    height:30px;
+    text-indent: 20px;
+}
+#cart h3{
+    text-transform: uppercase;
+    color:#3f53c8;
+}
+#cart button{
+    width:80px;
+    height:25px;
+    color:white;
+}
+
+.select button{
+    background-color:rgb(231, 100, 39);
+    border-radius: 120px;
+    border:solid gray 1px;
+}
+
+.pay{
+    border:solid 1px gray;
+    border-radius: 20px;
+    text-transform: uppercase;
+    padding: 10px 150px 30px 150px;
+    background-color: rgb(235, 105, 105);
+}
+.pay:hover{
+    background-color: red;
+}
+
+/* login */
+.newAccount{
+    border:solid 1px gray;
+    border-radius: 20px;
+    background-color: white;
+    text-align:center;
+    margin:50px 500px;
+    padding:30px;
+    overflow:hidden;
+}
+.newAccount input{
+    border:solid gray 2px;
+    text-indent: 15px;
+    border-radius: 15px;
+}
+.newAccount div{
+    /* border:solid 1px blue; */
+    color:#3f53c8;
+}
+.newAccount button{
+    border:1px solid gray;
+    border-radius: 120px;
+    width:130px;
+    height:30px;
+    color:white;
+    background-color:rgb(231, 100, 39) ;
+    margin:5px 0px;
+}
+.newAccount button:hover{
+    color:gray;
+    background-color: white;
+}
+
+
+#signup{
+    /* border:solid 5px yellow; */
+    border-radius:20px;
+    background-color: white;
+    text-align:center;
+    margin:50px 500px;
+    padding:50px;
+    overflow:hidden;
+}
+#new{
+    background-color:#3f53c8;
+    border-radius: 20px;
+    color:white;
+    margin:5px 0px;
+    border:1px solid gray;
+    width:130px;
+    height:30px;
+}
+.login label{
+    color:#3f53c8;
+}
+.login input{
+    border:solid gray 2px;
+    text-indent: 15px;
+    border-radius: 15px;
+
+}
+.login button{
+    border-radius: 20px;
+    border:1px solid gray;
+    width:130px;
+    height:30px;
+    color:white;
+    background-color:rgb(231, 100, 39) ;
+    margin:5px 0px;
+}
+.login button:hover{
+    color:gray;
+    background-color: white;
+}
+
+.create{
+    border:solid 1px gray;
+    border-radius: 20px;
+    background-color: white;
+    text-align:center;
+    margin:50px 500px;
+    padding:50px;
+}
+.create button{
+    border:1px solid gray;
+    border-radius: 120px;
+    width:130px;
+    height:30px;
+    color:white;
+    background-color:rgb(76, 65, 225) ;
+    margin:5px 0px;
+}
+.create button:hover{
+    color:gray;
+    background-color: white;
+}
+/* success */
+#success{
+    border:solid 1px gray;
+    border-radius:20px;
+    background-color: white;
+    text-align:center;
+    margin:80px 500px;
+    padding: 10px;
+}
+
+#admin{
+    background-color: white;
+    border-radius: 20px;
+    margin:50px;
+    padding:50px 
+}
+#admin table th,td{
+    padding:10px 50px;
+}
+
+#admin table{
+border:solid 5px gray;
+border-radius: 20px;
+}
+#admin p{
+    border:solid gray 1px;
+    border-radius: 120px;
+    background-color:rgb(231, 100, 39);
+    color:white;
+    margin:10px;
+    padding:5px;
+    padding-right:30px;
+    margin-left:1000px;
+    text-align: right;
+}
+#sort{
+    display: flex;
+    justify-content: space-between;
+}
+#sort button{
+    background-color:rgb(231, 100, 39);
+    border-radius: 120px;
+    border:solid gray 1px;
+    width:80px;
+    color:white;
+    text-transform: uppercase;
+}
+
+
+
+
+

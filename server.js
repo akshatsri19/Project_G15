@@ -34,6 +34,7 @@ mongoose.connection.on("open", () => {
 });
 
 const classSchema = new mongoose.Schema({
+    image:String,
     classType: String,
     classLevel: String,
     classInstructor: String,
@@ -90,11 +91,11 @@ var date = new Date();
 //----------------------------------------------- AUTHENTICATION AND AUTHRIZARION -------------------------------------------------------
 
 app.get("/", (req,res) => {
-    res.render("home", {layout:"skeleton", authCheck:validCred})
+     res.render("home", {layout:"skeleton", authCheck:validCred})
 })
 
 app.get("/login", async(req,res) => {
-    res.render("login", {layout:"skeleton",createAcc:createAccFlag})
+     res.render("login", {layout:"skeleton",createAcc:createAccFlag})
 })
 
 app.post("/login",async(req,res) => { 
@@ -107,14 +108,14 @@ app.post("/login",async(req,res) => {
             validCred = true
         }
         else{
-            return res.send("ERROR: Username or password is incorrect")
+             res.send("ERROR: Username or password is incorrect")
         }
         if(validCred === true){
             if(userTypeUi === "normal"){
                 req.session.currentUser = "normal"
                 cartEmail = userNameUi
                 const classOffered = await Class.find({}).lean();
-                res.render("class", {layout:"skeleton", classes:classOffered, authCheck:validCred})
+                 res.render("class", {layout:"skeleton", classes:classOffered, authCheck:validCred})
             }
             else if(userTypeUi === "admin")
             {
@@ -122,9 +123,9 @@ app.post("/login",async(req,res) => {
                 req.session.currentUser = "admin"
                 if(req.session.currentUser === "admin"){
                     const average = await Payments.aggregate([
-                        { $group: { _id: null, average_total: { $avg: "$total" } } }
+                        { $group: { _id: null, average_total: { $sum: "$total" } } }
                     ]);
-                res.render("admin",{layout:"skeleton", authCheck:validCred , payments:payments, avg:average})
+                     res.render("admin",{layout:"skeleton", authCheck:validCred , payments:payments, avg:average})
                 }
             }
         }    
@@ -137,14 +138,14 @@ app.post("/login",async(req,res) => {
 app.get("/bye",(req,res) => {
     req.session.destroy()
     validCred = false
-    res.render("home",{layout:"skeleton", authCheck:validCred})
+     res.render("home",{layout:"skeleton", authCheck:validCred})
 })
 
 //---------------------------------------------------------- CREATE ACCOUNT ------------------------------------------------------------
 
 app.get("/createAccount",(req,res) => {
     createAccFlag = true
-    res.render("login",{layout:"skeleton", createAcc:createAccFlag})
+     res.render("login",{layout:"skeleton", createAcc:createAccFlag})
 })
 
 app.post("/create", async (req,res) => {
@@ -186,7 +187,7 @@ app.post("/createAccount",async (req,res) => {
                 req.session.currentUser = "normal"
                 cartEmail = userNameUi
                 const classOffered = await Class.find({}).lean();
-                res.render("class", {layout:"skeleton", classes:classOffered, authCheck:validCred})
+                 res.render("class", {layout:"skeleton", classes:classOffered, authCheck:validCred})
             }
             else if(userTypeUi === "admin")
             {
@@ -194,9 +195,9 @@ app.post("/createAccount",async (req,res) => {
                 req.session.currentUser = "admin"
                 if(req.session.currentUser === "admin"){
                     const average = await Payments.aggregate([
-                        { $group: { _id: null, average_total: { $avg: "$total" } } }
+                        { $group: { _id: null, average_total: { $sum: "$total" } } }
                     ]);
-                res.render("admin",{layout:"skeleton", authCheck:validCred , payments:payments, avg:average})
+                     res.render("admin",{layout:"skeleton", authCheck:validCred , payments:payments, avg:average})
                 }
             }
     } 
@@ -211,7 +212,7 @@ app.post("/createAccount",async (req,res) => {
 app.get("/class", async(req,res) => {
     try {
         const classOffered = await Class.find({}).lean();
-        res.render("class", {layout:"skeleton", classes:classOffered, authCheck:validCred})
+         res.render("class", {layout:"skeleton", classes:classOffered, authCheck:validCred})
     } 
     catch (error) {
         console.error(error);
@@ -247,10 +248,10 @@ app.post("/class",async(req,res)=>{
                 paymentsObj.tax = paymentsObj.subTotal * 0.13;
                 paymentsObj.total = paymentsObj.subTotal + paymentsObj.tax
             }
-            res.render("class", {layout:"skeleton", classes:classOffered, authCheck:validCred})
+             res.render("class", {layout:"skeleton", classes:classOffered, authCheck:validCred})
         }
         else{
-            res.send("ERROR: You need to login to book a class")
+             res.send("ERROR: You need to login to book a class")
         }
     }
     catch (error) {
@@ -263,8 +264,21 @@ app.get("/cart",async (req,res) => {
     try {
         const cart = await Cart.find({}).lean()
         const users = await Users.findOne({userName:cartEmail}).lean()
-        res.render("cart", {layout:"skeleton", authCheck:validCred, user:users,cart:cart, payments:paymentsObj})
+         res.render("cart", {layout:"skeleton", authCheck:validCred, user:users,cart:cart, payments:paymentsObj})
     }
+    catch (error) {
+         console.error(error);
+    }
+})
+
+app.get("/sort",async(req,res)=>{
+    try {
+        const payments = await Payments.find({}).lean().sort({userName:1});
+        const average = await Payments.aggregate([
+            { $group: { _id: null, average_total: { $sum: "$total" } } }
+        ]);
+        res.render("admin",{layout:"skeleton", authCheck:validCred , payments:payments, avg:average})
+    } 
     catch (error) {
         console.error(error);
     }
@@ -276,7 +290,7 @@ app.post("/pay", async(req,res) => {
     try {
         const users = await Users.findOne({userName:cartEmail}).lean()
         if(validCred === false)
-            res.send("ERROR: Login in for booking a class")  
+             res.send("ERROR: Login in for booking a class")  
         else{
             if(buttonFuncUi==="proceed"){
                 const payments = new Payments({
@@ -290,9 +304,9 @@ app.post("/pay", async(req,res) => {
                 await payments.save()
                 const cart = await Cart.find({}).lean();
                 if(cart.length===0){
-                    res.send("ERROR: Please add items in cart to procees")
+                     res.send("ERROR: Please add items in cart to procees")
                 }
-                var randomNumber = Math.floor(Math.random() * (100000 - 99999 + 1)) + 99999;
+                const randomNumber = Math.floor(Math.random() * 1000000) + 99999;
                 res.render("success",{layout:"skeleton" ,authCheck:validCred, orderNumber:randomNumber})
                 paymentsObj.subTotal = 0
                 paymentsObj.tax = 0
@@ -305,7 +319,7 @@ app.post("/pay", async(req,res) => {
                 if(cart.length === 0){
                     paymentsObj.tax = 0
                     paymentsObj.total = 0
-                    res.render("cart", {layout:"skeleton", cart:cart, user: users , authCheck:validCred, error:"There are no items in your cart"})
+                     res.render("cart", {layout:"skeleton", cart:cart, user: users , authCheck:validCred, error:"There are no items in your cart"})
                 }
                 else{
                     if(users.member === true){
@@ -319,7 +333,7 @@ app.post("/pay", async(req,res) => {
                         paymentsObj.tax = paymentsObj.subTotal * 0.13;
                         paymentsObj.total = paymentsObj.subTotal + paymentsObj.tax
                     }
-                    res.render("cart", {layout:"skeleton", cart:cart, user: users , authCheck:validCred , error: "", payments:paymentsObj})
+                     res.render("cart", {layout:"skeleton", cart:cart, user: users , authCheck:validCred , error: "", payments:paymentsObj})
                 }
             }
         }
@@ -337,13 +351,13 @@ app.get("/admin",async(req,res) => {
         req.session.currentUser = "admin"
         if(req.session.currentUser === "admin"){
             const average = await Payments.aggregate([
-                { $group: { _id: null, average_total: { $avg: "$total" } } }
+                { $group: { _id: null, average_total: { $sum: "$total" } } }
             ]);
-        res.render("admin",{layout:"skeleton", authCheck:validCred , payments:payments, avg:average})
+            res.render("admin",{layout:"skeleton", authCheck:validCred , payments:payments, avg:average})
         }
     }
     else
-    res.send("ERROR: Only admin user is allowed to view this page")
+     res.send("ERROR: Only admin user is allowed to view this page")
 })
 
 // ------------------------------------------------------------------------------------------------------------------------------------
