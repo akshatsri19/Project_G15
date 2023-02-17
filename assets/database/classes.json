@@ -1,20 +1,28 @@
-[
-    {
-        "classType":"SPIN",
-        "classLevel":"BEGINNER",
-        "classInstructor":"RILEY",
-        "classDuration":30
-    },
-    {
-        "classType":"ASTHANGA YOGA",
-        "classLevel":"",
-        "classInstructor":"PETER",
-        "classDuration":60
-    },
-    {
-        "classType":"HITT",
-        "classLevel":"INTERMEDIATE",
-        "classInstructor":"MICHELLE",
-        "classDuration":45
-    }
-]
+[{
+  "_id": {
+    "$oid": "63ebdcd3d366fec60d44ddbb"
+  },
+  "classType": "ASTHANGA YOGA",
+  "classLevel": "",
+  "classInstructor": "PETER",
+  "classDuration": 60,
+  "image": "https://www.iprshealth.com/assets/Uploads/_resampled/CroppedFocusedImageWyI2MTMiLCIzMzgiLCIyOS00MyJd/pexels-photo-588561.jpeg"
+},{
+  "_id": {
+    "$oid": "63ebdcd3d366fec60d44ddbc"
+  },
+  "classType": "HITT",
+  "classLevel": "INTERMEDIATE",
+  "classInstructor": "MICHELLE",
+  "classDuration": 45,
+  "image": "https://www.supznutrition.com/media/image/fd/e4/22/HIIT-WORKOUT.jpg"
+},{
+  "_id": {
+    "$oid": "63ebdcd3d366fec60d44ddba"
+  },
+  "classType": "SPIN",
+  "classLevel": "BEGINNER",
+  "classInstructor": "RILEY",
+  "classDuration": 30,
+  "image": "https://www.villagegym.co.uk/media/5861/jebson-202-min.jpg"
+}]

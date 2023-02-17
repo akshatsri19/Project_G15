@@ -1,14 +1,21 @@
-[
-    {
-        "firstName":"Akshat",
-        "lastName":"Srivastava",
-        "userName":"akshat.sri19@gmail.com",
-        "password":"Aks.sri@1998"
-    },
-    {
-        "firstName":"Lord",
-        "lastName":"Voldemort",
-        "userName":"youknowwho@askaban.com",
-        "password":"LordVoldemort"
-    }
-]
+[{
+  "_id": {
+    "$oid": "63ebd008374ddc962f80d61b"
+  },
+  "firstName": "Akshat",
+  "lastname": "Srivastava",
+  "userName": "akshat.sri19@gmail.com",
+  "password": "Aks.sri@1998",
+  "member": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63ebd48bef8cdf39ead57b61"
+  },
+  "firstName": "Jack",
+  "lastname": "Chan",
+  "userName": "jackchan@gmail.com",
+  "password": "1234",
+  "member": false,
+  "__v": 0
+}]

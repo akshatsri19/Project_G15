@@ -1,0 +1,31 @@
+[{
+  "_id": {
+    "$oid": "63eda2c395cb339e54588a5a"
+  },
+  "firstName": "Akshat",
+  "userName": "akshat.sri19@gmail.com",
+  "subTotal": 0,
+  "tax": 9.75,
+  "total": 84.75,
+  "date": {
+    "$date": {
+      "$numberLong": "1676518062555"
+    }
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63edaace80da354457b882d3"
+  },
+  "firstName": "Peter",
+  "userName": "peterchan@gmail.com",
+  "subTotal": 67.5,
+  "tax": 8.775,
+  "total": 76.275,
+  "date": {
+    "$date": {
+      "$numberLong": "1676520109070"
+    }
+  },
+  "__v": 0
+}]
